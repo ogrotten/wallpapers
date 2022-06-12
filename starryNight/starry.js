@@ -16,26 +16,49 @@ function Star(x, y, z) {
 	this.size = 0.5 + Math.random();
 }
 
-function WarpSpeed(targetId, config) {
+let config = {
+	speed: 0.7,
+	targetSpeed: 0.7,
+	speedAdjFactor: 0.03,
+	density: 0.7,
+	shape: "circle",
+	depthFade: true,
+	warpEffect: true,
+	warpEffectLength: 5,
+	starSize: 3,
+	backgroundColor: "hsl(263,45%,7%)",
+	starColor: "#ffffff"
+}
+
+window.wallpaperPropertyListener = {
+	applyUserProperties: function (properties) {
+		if (properties.speed) {
+			config.speed = properties.speed.value;
+			WarpSpeed.draw()
+		}
+	},
+};
+
+
+function WarpSpeed(targetId) {
 	this.targetId = targetId;
 	if (WarpSpeed.RUNNING_INSTANCES == undefined) WarpSpeed.RUNNING_INSTANCES = {};
 	if (WarpSpeed.RUNNING_INSTANCES[targetId]) { WarpSpeed.RUNNING_INSTANCES[targetId].destroy(); }
-	config = config || {};
+
 	if (typeof config == "string") try { config = JSON.parse(config); } catch (e) { config = {} }
-	this.SPEED = config.speed == undefined || config.speed < 0 ? 0.7 : config.speed;
-	this.TARGET_SPEED = config.targetSpeed == undefined || config.targetSpeed < 0 ? this.SPEED : config.targetSpeed;
-	this.SPEED_ADJ_FACTOR = config.speedAdjFactor == undefined ? 0.03 : config.speedAdjFactor < 0 ? 0 : config.speedAdjFactor > 1 ? 1 : config.speedAdjFactor;
-	this.DENSITY = config.density == undefined || config.density <= 0 ? 0.7 : config.density;
-	this.USE_CIRCLES = config.shape == undefined ? true : config.shape == "circle";
-	this.DEPTH_ALPHA = config.depthFade == undefined ? true : config.depthFade;
-	this.WARP_EFFECT = config.warpEffect == undefined ? true : config.warpEffect;
-	this.WARP_EFFECT_LENGTH = config.warpEffectLength == undefined ? 5 : config.warpEffectLength < 0 ? 0 : config.warpEffectLength;
-	this.STAR_SCALE = config.starSize == undefined || config.starSize <= 0 ? 3 : config.starSize;
-	this.BACKGROUND_COLOR = config.backgroundColor == undefined ? "hsl(263,45%,7%)" : config.backgroundColor;
-	var canvas = document.getElementById(this.targetId);
-	canvas.width = 1; canvas.height = 1;
-	this.STAR_COLOR = config.starColor == undefined ? "#FFFFFF" : config.starColor;
+	this.SPEED = config.speed
+	this.TARGET_SPEED = config.targetSpeed
+	this.SPEED_ADJ_FACTOR = config.speedAdjFactor
+	this.DENSITY = config.density
+	this.USE_CIRCLES = config.shape
+	this.DEPTH_ALPHA = config.depthFade
+	this.WARP_EFFECT = config.warpEffect
+	this.WARP_EFFECT_LENGTH = config.warpEffectLength
+	this.STAR_SCALE = config.starSize
+	this.BACKGROUND_COLOR = config.backgroundColor
+	this.STAR_COLOR = config.starColor
 	this.prevW = -1; this.prevH = -1; //width and height will be set at first draw call
+
 	this.stars = [];
 	for (var i = 0; i < this.DENSITY * 1000; i++) {
 		this.stars.push(new Star((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, 1000 * Math.random()));
@@ -43,6 +66,8 @@ function WarpSpeed(targetId, config) {
 	this.lastMoveTS = timeStamp();
 	this.drawRequest = null;
 	this.LAST_RENDER_T = 0;
+	var canvas = document.getElementById(this.targetId);
+	canvas.width = 1; canvas.height = 1;
 	WarpSpeed.RUNNING_INSTANCES[targetId] = this;
 	this.draw();
 }
