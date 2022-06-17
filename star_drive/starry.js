@@ -17,7 +17,7 @@ function Star(x, y, z) {
 }
 
 let config = {
-	speed: 0.7,
+	speed: 1.7,
 	targetSpeed: 0.7,
 	speedAdjFactor: 0.03,
 	density: 0.7,
