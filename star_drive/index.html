@@ -19,22 +19,30 @@
 </head>
 
 <body>
-	<div class="text-box">
-		<div class="heading">To infinity and Beyond</div>
-		<div class="button-wrapper">
-			<div class="button">Learn More</div>
-			<div class="button">Contact Us</div>
-		</div>
-	</div>
-
 	<script src="three.min.js"></script>
 	<script>
 		let scene, camera, renderer, stars, starGeo;
 
-		let count = 10000,
-			acceleration = .01
+		let config = {
+			count: 10000,
+			acceleration: .1,
+			color: 0xaaaaaa,
+			size: .7,
+		}
+
+		function getStar() {
+			star = new THREE.Vector3(
+				Math.random() * 600 - 300,
+				Math.random() * 600 - 300,
+				Math.random() * 600 - 300
+			);
+			star.velocity = 0;
+			star.acceleration = config.acceleration;
+			return star
+		}
 
 		function init() {
+			const { color, size, map, } = config
 
 			scene = new THREE.Scene();
 
@@ -47,23 +55,20 @@
 			document.body.appendChild(renderer.domElement);
 
 			starGeo = new THREE.Geometry();
-			for (let i = 0; i < count; i++) {
-				star = new THREE.Vector3(
-					Math.random() * 600 - 300,
-					Math.random() * 600 - 300,
-					Math.random() * 600 - 300
-				);
-				star.velocity = 0;
-				star.acceleration = acceleration;
-				starGeo.vertices.push(star);
+			for (let i = 0; i < config.count; i++) {
+				// star = new THREE.Vector3(
+				// 	Math.random() * 600 - 300,
+				// 	Math.random() * 600 - 300,
+				// 	Math.random() * 600 - 300
+				// );
+				// star.velocity = 0;
+				// star.acceleration = config.acceleration;
+				starGeo.vertices.push(getStar());
 			}
 
 			let sprite = new THREE.TextureLoader().load('star.png');
-			let starMaterial = new THREE.PointsMaterial({
-				color: 0xaaaaaa,
-				size: 2,
-				map: sprite
-			});
+
+			let starMaterial = new THREE.PointsMaterial({ color, size, map: sprite });
 
 			stars = new THREE.Points(starGeo, starMaterial);
 			scene.add(stars);
@@ -72,23 +77,27 @@
 
 			animate();
 		}
+
 		function onWindowResize() {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		}
+
 		function animate() {
-			starGeo.vertices.forEach(p => {
+			starGeo.vertices.forEach((p, idx) => {
 				p.velocity += p.acceleration
 				p.y -= p.velocity;
 
 				if (p.y < -200) {
-					p.y = 400;
+					p.y = Math.random() * 200 + 200;
+					p.x = Math.random() * 600 - 300
+					p.z = Math.random() * 600 - 300
 					p.velocity = 0;
 				}
 			});
 			starGeo.verticesNeedUpdate = true;
-			stars.rotation.y += 0.002;
+			// stars.rotation.y += 0.002;
 
 			renderer.render(scene, camera);
 			requestAnimationFrame(animate);
