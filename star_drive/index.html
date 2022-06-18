@@ -24,16 +24,17 @@
     let config = {
       speed: .4,
       targetSpeed: 0.7,
-      speedAdjFactor: 0.03,
       density: 15,
-      shape: "circle",
+      starColor: "rgb(224, 255, 255)",
       depth: 1000,
-      depthFade: true,
       warpEffect: true,
       warpEffectLength: 10,
       starSize: 3,
-      backgroundColor: "hsl(263,45%,7%)",
-      starColor: "#ffffff",
+
+      depthFade: true,
+      shape: "circle",
+      backgroundColor: "rgb(0, 0, 16)",
+      speedAdjFactor: 0.05,
     }
 
     let show = new WarpSpeed("canvas", config)
@@ -78,6 +79,17 @@
           config.starColor = 'rgb(' + customColor + ')'
           // config.starColor = properties.color.value
           console.log(`conlog: starColor`, old, " > ", config.starColor)
+        }
+        if (properties.background) {
+          let old = config.backgroundColor
+          let customColor = properties.background.value.split(' ');
+          console.log(`conlog: customColor`, customColor)
+          customColor = customColor.map(function (c) {
+            return Math.ceil(c * 255);
+          });
+          config.backgroundColor = 'rgb(' + customColor + ')'
+          // config.starColor = properties.color.value
+          console.log(`conlog: starColor`, old, " > ", config.backgroundColor)
         }
 
         show.update(config)
