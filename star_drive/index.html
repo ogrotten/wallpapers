@@ -25,12 +25,12 @@
       speed: .4,
       targetSpeed: 0.7,
       speedAdjFactor: 0.03,
-      density: 20,
+      density: 15,
       shape: "circle",
       depth: 1000,
       depthFade: true,
       warpEffect: true,
-      warpEffectLength: 20,
+      warpEffectLength: 10,
       starSize: 3,
       backgroundColor: "hsl(263,45%,7%)",
       starColor: "#ffffff",
@@ -55,18 +55,31 @@
         if (properties.topspeed) {
           let old = config.targetSpeed
           config.targetSpeed = properties.topspeed.value * 1.2;
-          console.log(`conlog: topspeed`, old, " > ", config.topspeed)
+          console.log(`conlog: topspeed`, old, " > ", config.targetSpeed)
         }
         if (properties.warptrails) {
-          let old = config.targetSpeed
+          let old = config.warpEffect
           config.warpEffect = properties.warptrails.value;
-          console.log(`conlog: warptrails`, old, " > ", config.warptrails)
+          console.log(`conlog: warptrails`, old, " > ", config.warpEffect)
         }
         if (properties.traillength) {
-          let old = config.targetSpeed
+          let old = config.warpEffectLength
           config.warpEffectLength = properties.traillength.value / 5;
-          console.log(`conlog: traillength`, old, " > ", config.traillength)
+          console.log(`conlog: traillength`, old, " > ", config.warpEffectLength)
         }
+
+        if (properties.color) {
+          let old = config.starColor
+          let customColor = properties.color.value.split(' ');
+          console.log(`conlog: customColor`, customColor)
+          customColor = customColor.map(function (c) {
+            return Math.ceil(c * 255);
+          });
+          config.starColor = 'rgb(' + customColor + ')'
+          // config.starColor = properties.color.value
+          console.log(`conlog: starColor`, old, " > ", config.starColor)
+        }
+
         show.update(config)
 
         if (properties.depth) {
@@ -77,7 +90,7 @@
         }
         if (properties.density) {
           let old = config.density
-          config.density = properties.density.value / 2.5;
+          config.density = properties.density.value * 2.5;
           console.log(`conlog: density`, old, " > ", config.density)
           show = new WarpSpeed("canvas", config)
         }
