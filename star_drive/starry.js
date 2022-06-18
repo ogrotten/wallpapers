@@ -56,7 +56,7 @@ function WarpSpeed(targetId, config) {
 WarpSpeed.prototype = {
 	constructor: WarpSpeed,
 	draw: function () {
-		console.log(`conlog: config item`, this.STAR_SCALE)
+		// console.log(`conlog: config item`, this.STAR_SCALE)
 
 		var TIME = timeStamp();
 		if (!(document.getElementById(this.targetId))) {
@@ -145,7 +145,7 @@ WarpSpeed.prototype = {
 	},
 	update: function (config) {
 		console.log(`conlog: update config`, config)
-		this.SPEED = config.speed.toFixed(2)
+		this.SPEED = config.speed
 		this.TARGET_SPEED = config.targetSpeed
 		this.SPEED_ADJ_FACTOR = config.speedAdjFactor
 		this.DENSITY = config.density

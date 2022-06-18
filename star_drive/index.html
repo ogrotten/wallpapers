@@ -48,6 +48,9 @@
         if (properties.speed) {
           config.speed = properties.speed.value;
         }
+        if (properties.topspeed) {
+          config.targetSpeed = properties.topspeed.value;
+        }
         console.log(`conlog: config`, config)
         show.update(config)
         // show = new WarpSpeed("canvas", config)
