@@ -41,7 +41,11 @@ function WarpSpeed(targetId, config) {
 
 	this.stars = [];
 	for (var i = 0; i < this.DENSITY * 100; i++) {
-		this.stars.push(new Star((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, 1000 * Math.random()));
+		this.stars.push(
+			new Star(
+				(Math.random() - 0.5) * this.DEPTH_RANGE,
+				(Math.random() - 0.5) * this.DEPTH_RANGE,
+				this.DEPTH_RANGE * Math.random()));
 	}
 	this.lastMoveTS = timeStamp();
 	this.drawRequest = null;
@@ -57,8 +61,7 @@ function WarpSpeed(targetId, config) {
 WarpSpeed.prototype = {
 	constructor: WarpSpeed,
 	draw: function () {
-		// console.log(`conlog: config item`, this.STAR_SCALE)
-
+		// console.log(`conlog: config item`, this.stars[0])
 		var TIME = timeStamp();
 		if (!(document.getElementById(this.targetId))) {
 			this.destroy();
@@ -85,7 +88,13 @@ WarpSpeed.prototype = {
 				var size = s.size * this.size / s.z;
 				if (size < 0.3) continue; //don't draw very small dots
 				if (this.DEPTH_ALPHA) {
-					var alpha = (this.DEPTH_RANGE - s.z) / this.DEPTH_RANGE;
+					const far = this.DEPTH_RANGE * .8
+					const farRange = this.DEPTH_RANGE - far
+					if (s.z > far) {
+						var alpha = (this.DEPTH_RANGE - s.z) / farRange
+					} else {
+						var alpha = s.z / 100  // pct for last 100px
+					}
 					ctx.globalAlpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
 				}
 				if (this.WARP_EFFECT) {
@@ -124,7 +133,7 @@ WarpSpeed.prototype = {
 			var s = this.stars[i];
 			s.z -= speed;
 			while (s.z < 1) {
-				s.z += this.DEPTH_RANGE;
+				s.z += this.DEPTH_RANGE + (Math.random() - 0.5) * (this.DEPTH_RANGE * .2);
 				s.x = (Math.random() - 0.5) * s.z;
 				s.y = (Math.random() - 0.5) * s.z;
 			}
