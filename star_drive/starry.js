@@ -29,17 +29,18 @@ function WarpSpeed(targetId, config) {
 	this.SPEED_ADJ_FACTOR = config.speedAdjFactor
 	this.DENSITY = config.density
 	this.USE_CIRCLES = config.shape
-	this.DEPTH_ALPHA = config.depthFade
 	this.WARP_EFFECT = config.warpEffect
 	this.WARP_EFFECT_LENGTH = config.warpEffectLength
 	this.STAR_SCALE = config.starSize
 	this.BACKGROUND_COLOR = config.backgroundColor
 	this.STAR_COLOR = config.starColor
+	this.DEPTH_ALPHA = config.depthFade
+	this.DEPTH_RANGE = config.depth
 	this.prevW = -1;
 	this.prevH = -1; //width and height will be set at first draw call
 
 	this.stars = [];
-	for (var i = 0; i < this.DENSITY * 1000; i++) {
+	for (var i = 0; i < this.DENSITY * 100; i++) {
 		this.stars.push(new Star((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, 1000 * Math.random()));
 	}
 	this.lastMoveTS = timeStamp();
@@ -84,7 +85,7 @@ WarpSpeed.prototype = {
 				var size = s.size * this.size / s.z;
 				if (size < 0.3) continue; //don't draw very small dots
 				if (this.DEPTH_ALPHA) {
-					var alpha = (1000 - s.z) / 1000;
+					var alpha = (this.DEPTH_RANGE - s.z) / this.DEPTH_RANGE;
 					ctx.globalAlpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
 				}
 				if (this.WARP_EFFECT) {
@@ -123,7 +124,7 @@ WarpSpeed.prototype = {
 			var s = this.stars[i];
 			s.z -= speed;
 			while (s.z < 1) {
-				s.z += 1000;
+				s.z += this.DEPTH_RANGE;
 				s.x = (Math.random() - 0.5) * s.z;
 				s.y = (Math.random() - 0.5) * s.z;
 			}
@@ -156,8 +157,9 @@ WarpSpeed.prototype = {
 		this.STAR_SCALE = config.starSize
 		this.BACKGROUND_COLOR = config.backgroundColor
 		this.STAR_COLOR = config.starColor
+		this.DEPTH_RANGE = config.depth
 
-		this.draw()
+		// this.draw()
 	}
 }
 
