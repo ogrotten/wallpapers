@@ -25,9 +25,10 @@
 
 		let config = {
 			count: 10000,
-			acceleration: .1,
+			acceleration: 4,
 			color: 0xaaaaaa,
 			size: .7,
+			topspeed: .2
 		}
 
 		function getStar() {
@@ -86,7 +87,10 @@
 
 		function animate() {
 			starGeo.vertices.forEach((p, idx) => {
-				p.velocity += p.acceleration
+				if (p.velocity < config.topspeed) {
+					p.velocity += (p.acceleration / 200)
+				}
+
 				p.y -= p.velocity;
 
 				if (p.y < -200) {
@@ -98,6 +102,8 @@
 			});
 			starGeo.verticesNeedUpdate = true;
 			// stars.rotation.y += 0.002;
+
+			// console.log(`conlog: speed`, starGeo.vertices[0].velocity)
 
 			renderer.render(scene, camera);
 			requestAnimationFrame(animate);
