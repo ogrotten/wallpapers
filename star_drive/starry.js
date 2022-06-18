@@ -16,36 +16,14 @@ function Star(x, y, z) {
 	this.size = 0.5 + Math.random();
 }
 
-let config = {
-	speed: 1.7,
-	targetSpeed: 0.7,
-	speedAdjFactor: 0.03,
-	density: 0.7,
-	shape: "circle",
-	depthFade: true,
-	warpEffect: true,
-	warpEffectLength: 5,
-	starSize: 3,
-	backgroundColor: "hsl(263,45%,7%)",
-	starColor: "#ffffff"
-}
 
-window.wallpaperPropertyListener = {
-	applyUserProperties: function (properties) {
-		if (properties.speed) {
-			config.speed = properties.speed.value;
-			WarpSpeed.draw()
-		}
-	},
-};
+function WarpSpeed(targetId, config) {
 
-
-function WarpSpeed(targetId) {
 	this.targetId = targetId;
 	if (WarpSpeed.RUNNING_INSTANCES == undefined) WarpSpeed.RUNNING_INSTANCES = {};
 	if (WarpSpeed.RUNNING_INSTANCES[targetId]) { WarpSpeed.RUNNING_INSTANCES[targetId].destroy(); }
 
-	if (typeof config == "string") try { config = JSON.parse(config); } catch (e) { config = {} }
+	// if (typeof config == "string") try { config = JSON.parse(config); } catch (e) { config = {} }
 	this.SPEED = config.speed
 	this.TARGET_SPEED = config.targetSpeed
 	this.SPEED_ADJ_FACTOR = config.speedAdjFactor
@@ -57,7 +35,8 @@ function WarpSpeed(targetId) {
 	this.STAR_SCALE = config.starSize
 	this.BACKGROUND_COLOR = config.backgroundColor
 	this.STAR_COLOR = config.starColor
-	this.prevW = -1; this.prevH = -1; //width and height will be set at first draw call
+	this.prevW = -1;
+	this.prevH = -1; //width and height will be set at first draw call
 
 	this.stars = [];
 	for (var i = 0; i < this.DENSITY * 1000; i++) {
@@ -69,12 +48,16 @@ function WarpSpeed(targetId) {
 	var canvas = document.getElementById(this.targetId);
 	canvas.width = 1; canvas.height = 1;
 	WarpSpeed.RUNNING_INSTANCES[targetId] = this;
+
+
 	this.draw();
 }
 
 WarpSpeed.prototype = {
 	constructor: WarpSpeed,
 	draw: function () {
+		console.log(`conlog: config item`, this.STAR_SCALE)
+
 		var TIME = timeStamp();
 		if (!(document.getElementById(this.targetId))) {
 			this.destroy();
@@ -159,6 +142,22 @@ WarpSpeed.prototype = {
 	},
 	resume: function () {
 		this.PAUSED = false;
+	},
+	update: function (config) {
+		console.log(`conlog: update config`, config)
+		this.SPEED = config.speed.toFixed(2)
+		this.TARGET_SPEED = config.targetSpeed
+		this.SPEED_ADJ_FACTOR = config.speedAdjFactor
+		this.DENSITY = config.density
+		this.USE_CIRCLES = config.shape
+		this.DEPTH_ALPHA = config.depthFade
+		this.WARP_EFFECT = config.warpEffect
+		this.WARP_EFFECT_LENGTH = config.warpEffectLength
+		this.STAR_SCALE = config.starSize
+		this.BACKGROUND_COLOR = config.backgroundColor
+		this.STAR_COLOR = config.starColor
+
+		this.draw()
 	}
 }
 
