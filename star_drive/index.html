@@ -75,6 +75,11 @@
           config.shape = properties.rounded.value;
           console.log(`set rounded`, old, " > ", config.shape)
         }
+        if (properties.fade) {
+          let old = config.depthFade
+          config.depthFade = properties.fade.value;
+          console.log(`set fade`, old, " > ", config.shape)
+        }
 
         if (properties.color) {
           let old = config.starColor
