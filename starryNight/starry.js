@@ -13,7 +13,7 @@ function Star(x, y, z) {
 	this.x = x;
 	this.y = y;
 	this.z = z;
-	this.size = 0.5 + Math.random();
+	this.size = (1.5 - 1) + Math.random();
 }
 
 function WarpSpeed(targetId, config) {
