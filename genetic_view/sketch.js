@@ -1,11 +1,14 @@
+new Q5("global")
+
 let bars = []
 let limit = []
-let numbars = 20,
+let numbars = 25,
 	minwide = .01,
 	maxwide = .12,
 	speedmult = .5,
 	fgcolor = "#90cfc7",
-	bgcolor = "#404040",
+	// bgcolor = "#404040",
+	bgcolor = "black",
 	topmult = .3,
 	botmult = .7,
 	edgecolor = "#404040",
@@ -17,55 +20,74 @@ function setup() {
 	// createCanvas(windowWidth, 100);
 	createCanvas(windowWidth, windowHeight)
 
-	addEffects(blur2d(4, 4, 13), motionBlur())
-	addChannels(null)
+	for (let i = 0; i < numbars; i++) {
+		bars[i] = new Bar()
+	}
+	for (let i = 0; i < numbars; i++) {
+		bars[i] = new Bar()
+	}
+	rectMode(CENTER)
 
-
-	// for (let i = 0; i < numbars; i++) {
-	// 	bars[i] = new Bar()
-	// }
-	// for (let i = 0; i < numbars; i++) {
-	// 	bars[i] = new Bar();
-	// }
 }
+
+// function draw() {
+// 	// background(bgcolor)
+// 	rectMode(CENTER)
+// 	noStroke()
+
+// 	// scale(4)
+// 	thing1()
+// 	thing2()
+// 	// filter(BLUR, 3)
+
+// }
+
+// const thing1 = () => {
+// 	fill(0, 160, 160)
+// 	circle(100, 100, 20)
+// 	triangle(90, 100, 110, 100, 100, 150)
+// 	circle(100, 200, 20)
+// 	triangle(90, 200, 110, 200, 100, 150)
+// 	rect(100, 150, 8, 100)
+// }
+
+// const thing2 = () => {
+// 	fill(102, 51, 0)
+// 	circle(200, 100, 20)
+// 	circle(200, 200, 20)
+// 	rect(200, 150, 8, 100)
+
+// }
 
 function draw() {
 	background(bgcolor)
-	rectMode(CENTER)
-	noStroke()
-	fill(255)
-	circle(100, 100, 20)
-	circle(100, 200, 20)
-	rect(100, 150, 8, 100)
+	for (let i = 0; i < bars.length; i++) {
+		bars[i].move()
+		if (bars[i].in) {
+
+			bars[i].grow()
+		}
+		if (bars[i]) {
+			bars[i].display()
+		}
+	}
+
+	filter(BLUR, 10)
+
+	// fill(edgecolor);
+	// noStroke();
+	// let topborder = height * topmult;
+	// let bottomorigin = height * botmult;
+	// let botborder = height - bottomorigin;
+	// rect(0, 0, width, topborder);
+	// rect(0, bottomorigin, width, botborder);
 }
-
-
-// function draw() {
-// 	background(bgcolor);
-// 	for (let i = 0; i < bars.length; i++) {
-// 		bars[i].move();
-// 		if (bars[i].in) {F
-// 			bars[i].grow();
-// 		}
-// 		if (bars[i]) {
-// 			bars[i].display();
-// 		}
-// 	}
-
-// 	fill(edgecolor);
-// 	noStroke();
-// 	let topborder = height * topmult;
-// 	let bottomorigin = height * botmult;
-// 	let botborder = height - bottomorigin;
-// 	rect(0, 0, width, topborder);
-// 	rect(0, bottomorigin, width, botborder);
-// }
 
 // Bar class
 function Bar() {
 	if (!this.wide) {
 		this.x = random(width)
-		this.y = 0
+		this.y = windowHeight / 2
 		this.wide = 0
 		this.targetwide = this.origwide = getwide()
 		this.speed = getspeed()
@@ -111,10 +133,20 @@ function Bar() {
 		};
 	}
 
+	const offset = getwide() / 2
 	this.display = function () {
 		fill(fgcolor)
 		noStroke()
-		rect(this.x, this.y, this.wide, height)
+
+
+		beam(this.x - offset, this.y)
+		beam(this.x + offset, this.y)
+
+		stroke(fgcolor)
+		strokeWeight(8)
+		fill("rgba(144, 207, 199, .3)")
+		rect(this.x, this.y + 50, offset * 2, 100)
+
 	}
 
 	this.setmin = function (newmin) {
@@ -129,6 +161,16 @@ function Bar() {
 		return width * random(minwide, maxwide)
 	}
 }
+
+const beam = (x, y) => {
+	circle(x, y, 20)
+	circle(x, y + 100, 20)
+	triangle(x - 10, y, x + 10, y, x, y + 50)
+	triangle(x - 10, y + 100, x + 10, y + 100, x, y + 50)
+	rect(x, y + 50, 8, 100)
+}
+
+
 
 window.wallpaperPropertyListener = {
 	applyUserProperties: function (properties) {
