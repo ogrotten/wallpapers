@@ -2,10 +2,10 @@ new Q5("global")
 
 let bars = []
 let limit = []
-let numbars = 20,
+let numbars = 2,
 	minwide = .01,
 	maxwide = .12,
-	speedmult = .5,
+	speedmult = 1.5,
 	fgcolor = "#90cfc7",
 	// bgcolor = "#404040",
 	bgcolor = "black",
@@ -15,6 +15,7 @@ let numbars = 20,
 	direction = "R",
 	speedset = [.5, 3.5, 2, -.5, -3.5, -2]
 
+const onefifth = width / 5
 
 function setup() {
 	// createCanvas(windowWidth, 100);
@@ -31,49 +32,18 @@ function setup() {
 
 }
 
-// function draw() {
-// 	// background(bgcolor)
-// 	rectMode(CENTER)
-// 	noStroke()
-
-// 	// scale(4)
-// 	thing1()
-// 	thing2()
-// 	// filter(BLUR, 3)
-
-// }
-
-// const thing1 = () => {
-// 	fill(0, 160, 160)
-// 	circle(100, 100, 20)
-// 	triangle(90, 100, 110, 100, 100, 150)
-// 	circle(100, 200, 20)
-// 	triangle(90, 200, 110, 200, 100, 150)
-// 	rect(100, 150, 8, 100)
-// }
-
-// const thing2 = () => {
-// 	fill(102, 51, 0)
-// 	circle(200, 100, 20)
-// 	circle(200, 200, 20)
-// 	rect(200, 150, 8, 100)
-
-// }
-
 function draw() {
 	background(bgcolor)
 	stroke(`${fgcolor}aa`)
 	strokeWeight(8)
-	// line(0, windowHeight / 2, windowWidth, windowHeight / 2)
-	// line(0, windowHeight / 2 + 100, windowWidth, windowHeight / 2 + 100)
 
+	//rails
 	fill(`${fgcolor}40`)
 	rect(windowWidth / 2, windowHeight / 2 + 50, windowWidth, 100)
 
 	for (let i = 0; i < bars.length; i++) {
 		bars[i].move()
 		if (bars[i].in) {
-
 			bars[i].grow()
 		}
 		if (bars[i]) {
@@ -81,16 +51,8 @@ function draw() {
 		}
 	}
 
+	// filter(BLUR, 10)
 
-	filter(BLUR, 10)
-
-	// fill(edgecolor);
-	// noStroke();
-	// let topborder = height * topmult;
-	// let bottomorigin = height * botmult;
-	// let botborder = height - bottomorigin;
-	// rect(0, 0, width, topborder);
-	// rect(0, bottomorigin, width, botborder);
 }
 
 // Bar class
@@ -106,7 +68,7 @@ function Bar() {
 
 	this.dark = random(1) < .50 ? true : false
 
-	console.log(`LOG..sketch: this.dark`, this.dark)
+	console.log(`LOG..sketch: width`, width)
 
 	this.grow = function () {
 		this.wide += this.targetwide / this.in
@@ -126,35 +88,45 @@ function Bar() {
 	//   bars.splice(toremove, 1, tomove);
 	// }
 
+	let offset = getwide() / 2
 	this.move = function () {
 		this.x += this.speed
-		if (this.x > width) {
+		if (this.x > width + (offset * 2)) {
+			localcolor = fgcolor
 			this.speed = getspeed()
-			this.wide = getwide()
+			offset = getwide() / 2
 			if (direction == "L") {
 				this.x = width
 			} else {
 				this.x = 0 - this.wide
 			}
-		} else if (this.x < 0 - this.wide) {
+		} else if (this.x < 0 - (offset * 2)) {
+			localcolor = fgcolor
 			this.speed = getspeed()
-			this.wide = getwide()
+			offset = getwide() / 2
 			if (direction == "R") {
 				this.x = 0 - this.wide
 			} else {
 				this.x = width
 			}
 		};
+
 	}
 
-	const offset = getwide() / 2
-	// const localcolor = this.dark ? lerpColor("red", fgcolor, random(.5)).toString() : fgcolor
-	const localcolor = this.dark ? pSBC(random(.5), "#000", fgcolor) : fgcolor
-	// const localcolor = fgcolor
 
-	// const localcolor = random(["#90cfc7", "#e27d60", "#c38d9e", "#41b3a3", "#f2d388"])
-	// const localcolor = random(["#90cfc7", "#e27d60", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7",])
+	let localcolor = this.dark ? pSBC(random(.5), "#000", fgcolor) : fgcolor
+
 	this.display = function () {
+		// const ninetieth = width - onefifth
+		// if (this.x > (width - onefifth)) {
+		// 	let loc = this.x
+		// 	let scale = (loc - ninetieth) / onefifth
+		// 	localcolor = pSBC(1 - scale, "#000", localcolor)
+		// 	// debugger
+		// 	// console.log(`LOG..sketch: loc`, loc)
+		// } else if (this.x < (0 + onefifth)) {
+
+		// }
 		fill(localcolor)
 		noStroke()
 
