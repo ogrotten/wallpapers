@@ -2,7 +2,7 @@ new Q5("global")
 
 let bars = []
 let limit = []
-let numbars = 25,
+let numbars = 20,
 	minwide = .01,
 	maxwide = .12,
 	speedmult = .5,
@@ -12,7 +12,7 @@ let numbars = 25,
 	topmult = .3,
 	botmult = .7,
 	edgecolor = "#404040",
-	direction = "0",
+	direction = "R",
 	speedset = [.5, 3.5, 2, -.5, -3.5, -2]
 
 
@@ -27,6 +27,7 @@ function setup() {
 		bars[i] = new Bar()
 	}
 	rectMode(CENTER)
+	colorMode(RGB)
 
 }
 
@@ -61,6 +62,14 @@ function setup() {
 
 function draw() {
 	background(bgcolor)
+	stroke(`${fgcolor}aa`)
+	strokeWeight(8)
+	// line(0, windowHeight / 2, windowWidth, windowHeight / 2)
+	// line(0, windowHeight / 2 + 100, windowWidth, windowHeight / 2 + 100)
+
+	fill(`${fgcolor}40`)
+	rect(windowWidth / 2, windowHeight / 2 + 50, windowWidth, 100)
+
 	for (let i = 0; i < bars.length; i++) {
 		bars[i].move()
 		if (bars[i].in) {
@@ -71,6 +80,7 @@ function draw() {
 			bars[i].display()
 		}
 	}
+
 
 	filter(BLUR, 10)
 
@@ -93,6 +103,10 @@ function Bar() {
 		this.speed = getspeed()
 		this.in = 250
 	}
+
+	this.dark = random(1) < .50 ? true : false
+
+	console.log(`LOG..sketch: this.dark`, this.dark)
 
 	this.grow = function () {
 		this.wide += this.targetwide / this.in
@@ -134,17 +148,24 @@ function Bar() {
 	}
 
 	const offset = getwide() / 2
+	// const localcolor = this.dark ? lerpColor("red", fgcolor, random(.5)).toString() : fgcolor
+	const localcolor = this.dark ? pSBC(random(.5), "#000", fgcolor) : fgcolor
+	// const localcolor = fgcolor
+
+	// const localcolor = random(["#90cfc7", "#e27d60", "#c38d9e", "#41b3a3", "#f2d388"])
+	// const localcolor = random(["#90cfc7", "#e27d60", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7",])
 	this.display = function () {
-		fill(fgcolor)
+		fill(localcolor)
 		noStroke()
 
 
 		beam(this.x - offset, this.y)
 		beam(this.x + offset, this.y)
 
-		stroke(fgcolor)
+		stroke(`${localcolor}40`)
+		fill(`${localcolor}40`)
+		// stroke(localcolor)
 		strokeWeight(8)
-		fill("rgba(144, 207, 199, .3)")
 		rect(this.x, this.y + 50, offset * 2, 100)
 
 	}
