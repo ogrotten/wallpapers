@@ -5,14 +5,14 @@ let limit = []
 let numbars = 20,
 	minwide = .01,
 	maxwide = .12,
-	speedmult = .2,
+	speedmult = .5,
 	fgcolor = "#90cfc7",
 	// bgcolor = "#404040",
 	bgcolor = "black",
 	topmult = .3,
 	botmult = .7,
 	edgecolor = "#404040",
-	direction = "0",
+	direction = "R",
 	speedset = [.5, 3.5, 2, -.5, -3.5, -2]
 
 
@@ -82,7 +82,7 @@ function draw() {
 	}
 
 
-	// filter(BLUR, 10)
+	filter(BLUR, 10)
 
 	// fill(edgecolor);
 	// noStroke();
@@ -104,7 +104,8 @@ function Bar() {
 		this.in = 250
 	}
 
-	this.dark = random(1) < .5 ? true : false
+	this.dark = random(1) < .50 ? true : false
+
 	console.log(`LOG..sketch: this.dark`, this.dark)
 
 	this.grow = function () {
@@ -148,8 +149,8 @@ function Bar() {
 
 	const offset = getwide() / 2
 	// const localcolor = this.dark ? lerpColor("red", fgcolor, random(.5)).toString() : fgcolor
-	// const localcolor = this.dark ? color(0, random(0, 128)) : fgcolor
-	const localcolor = fgcolor
+	const localcolor = this.dark ? pSBC(random(.5), "#000", fgcolor) : fgcolor
+	// const localcolor = fgcolor
 
 	// const localcolor = random(["#90cfc7", "#e27d60", "#c38d9e", "#41b3a3", "#f2d388"])
 	// const localcolor = random(["#90cfc7", "#e27d60", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7", "#90cfc7",])
@@ -162,6 +163,8 @@ function Bar() {
 		beam(this.x + offset, this.y)
 
 		stroke(`${localcolor}40`)
+		fill(`${localcolor}40`)
+		// stroke(localcolor)
 		strokeWeight(8)
 		rect(this.x, this.y + 50, offset * 2, 100)
 
