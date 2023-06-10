@@ -36,7 +36,7 @@ function setup() {
 }
 
 function draw() {
-	background(bgcolor)
+	background("#000")
 	stroke(`${fgcolor}aa`)
 	strokeWeight(8)
 
