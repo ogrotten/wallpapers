@@ -1,0 +1,127 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "Since there's not very many subtle wallpapers, I thought I'd do my part to change that. \n\nThis wallpaper is simple lines and bars scanning back and forth. You can change the  obvious properties.\n\nWhen loading a saved preset, sometimes Wallpaper Engine will set it with no activity. Changing the \"Size 1\" parameter (then put it back) will fix it.",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"background_color" : 
+			{
+				"order" : 100,
+				"text" : "Color A",
+				"type" : "color",
+				"value" : "0.5647058823529412 0.8117647058823529 0.7803921568627451"
+			},
+			"bottom_edge" : 
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 1,
+				"order" : 109,
+				"text" : "Bottom Edge",
+				"type" : "slider",
+				"value" : 70
+			},
+			"density" : 
+			{
+				"fraction" : false,
+				"max" : 50,
+				"min" : 2,
+				"order" : 105,
+				"text" : "Density",
+				"type" : "slider",
+				"value" : 15
+			},
+			"direction" : 
+			{
+				"options" : 
+				[
+					{
+						"label" : "Left",
+						"value" : "L"
+					},
+					{
+						"label" : "Right",
+						"value" : "R"
+					},
+					{
+						"label" : "Both",
+						"value" : "0"
+					}
+				],
+				"order" : 103,
+				"text" : "Direction",
+				"type" : "combo",
+				"value" : "0"
+			},
+			"edge_color" : 
+			{
+				"order" : 102,
+				"text" : "Edge color",
+				"type" : "color"
+			},
+			"foreground_color" : 
+			{
+				"order" : 101,
+				"text" : "Color 1",
+				"type" : "color"
+			},
+			"maximum_size" : 
+			{
+				"fraction" : false,
+				"max" : 80,
+				"min" : 1,
+				"order" : 107,
+				"text" : "Size 1",
+				"type" : "slider",
+				"value" : 18
+			},
+			"minimum_size" : 
+			{
+				"fraction" : false,
+				"max" : 50,
+				"min" : 1,
+				"order" : 106,
+				"text" : "Size A",
+				"type" : "slider",
+				"value" : 5
+			},
+			"schemecolor" : 
+			{
+				"order" : 11,
+				"text" : "Scheme Color",
+				"type" : "color",
+				"value" : "0.6784313725490196 0.8470588235294118 0.9019607843137255"
+			},
+			"speed" : 
+			{
+				"fraction" : true,
+				"max" : 5,
+				"min" : 0.10000000000000001,
+				"order" : 104,
+				"precision" : 1,
+				"step" : 0.10000000000000001,
+				"text" : "Speed",
+				"type" : "slider",
+				"value" : 1
+			},
+			"top_edge" : 
+			{
+				"fraction" : false,
+				"max" : 99,
+				"min" : 0,
+				"order" : 108,
+				"text" : "Top Edge",
+				"type" : "slider",
+				"value" : 30
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"tags" : [ "Abstract" ],
+	"title" : "scanTron",
+	"type" : "web",
+	"visibility" : "public",
+	"workshopid" : "1618463074"
+}
