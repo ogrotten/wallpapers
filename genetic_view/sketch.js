@@ -1,11 +1,15 @@
 new Q5("global")
 
+const Y_AXIS = 1
+const X_AXIS = 2
+const onefifth = width / 5
+
 let bars = []
 let limit = []
-let numbars = 2,
+let numbars = 25,
 	minwide = .01,
 	maxwide = .12,
-	speedmult = 1.5,
+	speedmult = .5,
 	fgcolor = "#90cfc7",
 	// bgcolor = "#404040",
 	bgcolor = "black",
@@ -15,7 +19,6 @@ let numbars = 2,
 	direction = "R",
 	speedset = [.5, 3.5, 2, -.5, -3.5, -2]
 
-const onefifth = width / 5
 
 function setup() {
 	// createCanvas(windowWidth, 100);
@@ -50,8 +53,10 @@ function draw() {
 			bars[i].display()
 		}
 	}
+	setGradient(0, height / 2 - 10, width / 7, 120, color(0, 80), color(0, 0), X_AXIS)
+	setGradient(width - width / 7, height / 2 - 10, width / 5, 120, color(0, 0), color(0, 80), X_AXIS)
 
-	// filter(BLUR, 10)
+	filter(BLUR, 10)
 
 }
 
@@ -326,3 +331,36 @@ function getspeed() {
 	return (r + vary) * speedmult
 }
 
+/**
+ * 
+ * @param {*} x  
+ * @param {*} y 
+ * @param {*} w  width
+ * @param {*} h  height
+ * @param {*} c1  color 1
+ * @param {*} c2  color 2
+ * @param {*} axis  X_AXIS or Y_AXIS
+ */
+function setGradient(x, y, w, h, c1, c2, axis) {
+	noFill()
+
+	if (axis === Y_AXIS) {
+		// Top to bottom gradient
+		for (let i = y; i <= y + h; i++) {
+			let inter = map(i, y, y + h, 0, 1)
+			let c = lerpColor(c1, c2, inter)
+			stroke(c)
+			line(x, i, x + w, i)
+		}
+	} else if (axis === X_AXIS) {
+		// Left to right gradient
+		for (let i = x; i <= x + w; i++) {
+			let inter = map(i, x, x + w, 0, 1)
+			// console.log(`LOG..sketch: inter`, (c1, c2, inter))
+			// debugger
+			let c = lerpColor(c1, c2, inter)
+			stroke(c)
+			line(i, y, i, y + h)
+		}
+	}
+}
